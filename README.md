@@ -100,6 +100,28 @@ LD_LIBRARY_PATH=../ghostty/zig-out/lib:$LD_LIBRARY_PATH ./target/release/limux
 This builds the binary, bundles `libghostty.so`, icons, and an install script into a tarball.
 `package.sh` also rebuilds `libghostty.so` with `ReleaseFast` and `-Dcpu=baseline`, so Zig and the initialized Ghostty submodule must be present.
 
+### Nix
+
+This repository includes a Nix flake for development shells and package builds.
+
+```bash
+# Enter a shell with Rust, Zig, GTK4, libadwaita, and WebKitGTK available
+nix develop
+
+# Build libghostty once for local cargo builds
+(cd ghostty && zig build -Dapp-runtime=none -Doptimize=ReleaseFast)
+
+# Build or run through the flake
+nix build
+nix run
+```
+
+The Ghostty submodule must be initialized before building with Nix:
+
+```bash
+git submodule update --init --recursive
+```
+
 ## Development
 
 Run the canonical local quality gate before committing:
